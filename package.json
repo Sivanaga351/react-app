@@ -38,6 +38,8 @@
     ]
   },
   "devDependencies": {
-    "prettier": "2.5.1"
+    "prettier": "2.5.1",
+    "release": "^6.3.0",
+    "semantic": "^0.0.1"
   }
 }
