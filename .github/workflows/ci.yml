@@ -62,15 +62,15 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN}}
 
       - name: Deploy to staging
-        if: github.event_name == 'push' && github.ref ='refs/heads/develop'
+        if: github.event_name == 'push' && github.ref =='refs/heads/develop'
         run: npx surge --project ./build --domain pushy-pan.surge.sh   
 
       - name: Deploy to production
-        if: github.event_name == 'push' && github.ref ='refs/heads/master'
+        if: github.event_name == 'push' && github.ref =='refs/heads/master'
         run: npx surge --project ./build --ludicrous-dock.surge.sh
 
       - name: Upload Coverage Reports
-        if: github.event_name == 'push' && github.ref ='refs/heads/master'
+        if: github.event_name == 'push' && github.ref =='refs/heads/master'
         run: npx code-coverage
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN}}
