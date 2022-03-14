@@ -21,6 +21,7 @@ jobs:
           key: ${{runner.os }}-node-${{hashfiles('**/package-lock.json')}}
           restore-keys: |
             ${{runner.os }}-node-
+
       - name: Use Nodejs
         uses: actions/setup-node@v1
         with:
@@ -31,6 +32,7 @@ jobs:
       - run: npm test -- --coverage
         env:
           CI: 'true'
+
       - name: upload Test Coverage
         uses: actions/upload-artifact@v1
         with:
@@ -39,28 +41,34 @@ jobs:
       - name: Build project
         if: github.event_name=='push'
         run: npm run build
+
       - name: upload build folder
         if: github.event_name=='push'
         uses: actions/upload-artifact@v1
         with:
           name: build
           path: build
+
       - name: ZIP Assets
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master'   
+        if: github.event_name == 'push' && github.ref =='refs/heads/master'   
         run: |
           zip -r build.zip ./build
           zip -r coverage.zip ./coverage
+
       - name: Create semantic-release
         if: github.event_name =='push' && github.ref=='refs/heads/master'
         run: npx -p node@lts -c "npx semantic-release"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN}}
+
       - name: Deploy to staging
         if: github.event_name == 'push' && github.ref ='refs/heads/develop'
-        run: npx surge --project ./build --domain pushy-pan.surge.sh        
+        run: npx surge --project ./build --domain pushy-pan.surge.sh   
+
       - name: Deploy to production
         if: github.event_name == 'push' && github.ref ='refs/heads/master'
         run: npx surge --project ./build --ludicrous-dock.surge.sh
+
       - name: Upload Coverage Reports
         if: github.event_name == 'push' && github.ref ='refs/heads/master'
         run: npx code-coverage
