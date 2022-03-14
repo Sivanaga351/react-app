@@ -14,7 +14,7 @@ jobs:
       SURGE_TOKEN: ${{secrets.SURGE_TOKEN}}
     steps:
       - uses: actions/checkout@v2
-
+      
       - name: Cache Node_modules
         uses: actions/cache@v1
         with:
@@ -62,9 +62,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.CUSTOM_TOKEN}}
 
-      # - name: Deploy to staging
-      #   if: github.event_name == 'push' && github.ref =='refs/heads/develop'
-      #   run: npx surge --project ./build --domain pushy-pan.surge.sh   
+      - name: Deploy to staging
+        if: github.event_name == 'push' && github.ref =='refs/heads/develop'
+        run: npx surge --project ./build --domain pushy-pan.surge.sh   
 
       - name: Deploy to production
         if: github.event_name == 'push' && github.ref =='refs/heads/master'
