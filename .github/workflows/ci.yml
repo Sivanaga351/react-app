@@ -2,9 +2,9 @@ name: CI
 
 on:
   pull_request:
-    branches: [develop]
+    branches: [develop, master]
   push:
-    branches: [develop]
+    branches: [develop, master]
 
 jobs:
   build:
@@ -48,7 +48,7 @@ jobs:
           zip -r build.zip ./build
           zip -r coverage.zip ./Coverage
       - name: Create semantic-release
-        if: github.event_name=='push' && github.ref=='refs/heads/master'
+        if: github.event_name =='push' && github.ref=='refs/heads/master'
         run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN}}
